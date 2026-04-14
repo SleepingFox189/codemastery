@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeMastery Pro — Learn to Build Real Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050508;
+    --surface: #0d0d14;
+    --surface2: #13131e;
+    --border: rgba(255,255,255,0.07);
+    --accent: #00e5ff;
+    --accent2: #a78bfa;
+    --accent3: #f97316;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --green: #22c55e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(5,5,8,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .nav-logo span { color: var(--accent); }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #000 !important;
+    padding: 9px 20px;
+    border-radius: 6px;
+    font-weight: 700 !important;
+    color: #000 !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; color: #000 !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(167,139,250,0.07) 0%, transparent 70%);
+    top: 30%; left: 60%;
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.25);
+    color: var(--accent);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    max-width: 900px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    max-width: 560px;
+    font-size: 1.1rem;
+    color: #8888a0;
+    margin: 24px auto 0;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #0099bb);
+    color: #000;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 16px 36px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 40px rgba(0,229,255,0.25);
+    font-family: 'Syne', sans-serif;
+    letter-spacing: -0.01em;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 60px rgba(0,229,255,0.4);
+  }
+
+  .btn-ghost {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--text); }
+
+  .hero-stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 60px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .stat {
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: #fff;
+    letter-spacing: -0.04em;
+  }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 4px;
+  }
+
+  /* ── CODE PREVIEW ── */
+  .code-preview {
+    margin: 0 auto;
+    margin-top: 80px;
+    max-width: 900px;
+    padding: 0 24px;
+    animation: fadeUp 0.6s 0.5s ease both;
+  }
+
+  .code-window {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+  }
+
+  .code-titlebar {
+    background: var(--surface);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot-red, .dot-yellow, .dot-green {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+  }
+  .dot-red { background: #ff5f57; }
+  .dot-yellow { background: #febc2e; }
+  .dot-green { background: #28c840; }
+
+  .code-filename {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  .code-body {
+    padding: 28px 32px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.8;
+    overflow-x: auto;
+  }
+
+  .ln { color: #333350; margin-right: 24px; user-select: none; }
+  .kw { color: #a78bfa; }
+  .fn { color: #00e5ff; }
+  .str { color: #86efac; }
+  .cm { color: #4b4b6a; font-style: italic; }
+  .num { color: #f97316; }
+  .var { color: #fbbf24; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 100px 24px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-sub {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  /* ── WHAT YOU GET ── */
+  .what-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 60px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .what-card {
+    background: var(--surface);
+    padding: 40px 32px;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .what-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .what-card:hover { background: var(--surface2); }
+  .what-card:hover::before { opacity: 1; }
+
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+
+  .icon-cyan { background: rgba(0,229,255,0.1); }
+  .icon-purple { background: rgba(167,139,250,0.1); }
+  .icon-orange { background: rgba(249,115,22,0.1); }
+  .icon-green { background: rgba(34,197,94,0.1); }
+  .icon-pink { background: rgba(236,72,153,0.1); }
+  .icon-yellow { background: rgba(251,191,36,0.1); }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .card-desc {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── PDFs HIGHLIGHT ── */
+  .pdfs-banner {
+    background: linear-gradient(135deg, rgba(0,229,255,0.06), rgba(167,139,250,0.06));
+    border: 1px solid rgba(0,229,255,0.15);
+    border-radius: 16px;
+    padding: 48px;
+    margin-top: 48px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .pdfs-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 6rem;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+  }
+
+  .pdfs-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+  .pdfs-info p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 480px;
+  }
+
+  .pdfs-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .tag {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* ── CURRICULUM ── */
+  .curriculum-bg { background: var(--surface); }
+
+  .modules {
+    margin-top: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .module {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .module-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .module-header:hover { background: var(--surface2); }
+
+  .module-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .module-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    width: 32px;
+    text-align: right;
+  }
+
+  .module-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+  }
+
+  .module-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .module-count {
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .module-arrow {
+    color: var(--muted);
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+  }
+
+  .module.open .module-arrow { transform: rotate(90deg); }
+
+  .module-lessons {
+    display: none;
+    padding: 0 28px 20px 80px;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .module.open .module-lessons { display: flex; }
+
+  .lesson {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .lesson:last-child { border: none; }
+
+  .lesson-icon { font-size: 0.7rem; }
+  .lesson-free {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--green);
+    background: rgba(34,197,94,0.1);
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  /* ── TOOLS SECTION ── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 16px;
+    margin-top: 60px;
+  }
+
+  .tool-chip {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .tool-chip:hover {
+    border-color: rgba(0,229,255,0.3);
+    transform: translateY(-3px);
+  }
+
+  .tool-emoji { font-size: 1.8rem; margin-bottom: 8px; }
+  .tool-name {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 60px;
+  }
+
+  .testimonial {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: transform 0.2s;
+  }
+  .testimonial:hover { transform: translateY(-4px); }
+
+  .stars {
+    color: #fbbf24;
+    font-size: 0.8rem;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+  }
+
+  .t-text {
+    font-size: 0.9rem;
+    color: #9090a8;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .t-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .t-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    font-family: 'Syne', sans-serif;
+  }
+
+  .t-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    font-family: 'Syne', sans-serif;
+  }
+  .t-role {
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── PRICING ── */
+  .pricing-bg { background: var(--surface); }
+
+  .pricing-card {
+    background: var(--bg);
+    border: 1px solid rgba(0,229,255,0.25);
+    border-radius: 20px;
+    max-width: 520px;
+    margin: 60px auto 0;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 80px rgba(0,229,255,0.07);
+  }
+
+  .pricing-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .pricing-badge {
+    background: rgba(0,229,255,0.1);
+    border: 1px solid rgba(0,229,255,0.25);
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    padding: 4px 14px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 24px;
+  }
+
+  .pricing-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+  }
+
+  .pricing-desc {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 32px;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .price-old {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    color: var(--muted);
+    text-decoration: line-through;
+  }
+
+  .price-current {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 4rem;
+    letter-spacing: -0.05em;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .price-period {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .price-note {
+    font-size: 0.8rem;
+    color: var(--green);
+    margin-bottom: 32px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0;
+  }
+
+  .feature-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+
+  .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: #9090a8;
+  }
+
+  .feature-list li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .feature-list li strong {
+    color: var(--text);
+  }
+
+  .btn-purchase {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), #0099bb);
+    color: #000;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+    padding: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 40px rgba(0,229,255,0.25);
+  }
+  .btn-purchase:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 60px rgba(0,229,255,0.4);
+  }
+
+  .trust-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* ── FAQ ── */
+  .faqs {
+    max-width: 720px;
+    margin: 60px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .faq {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    padding: 20px 24px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: var(--surface2); }
+
+  .faq-a {
+    display: none;
+    padding: 0 24px 20px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .faq.open .faq-a { display: block; }
+  .faq.open .faq-arrow { transform: rotate(45deg); }
+  .faq-arrow { transition: transform 0.2s; color: var(--muted); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -0.03em;
+  }
+  .footer-logo span { color: var(--accent); }
+
+  .footer-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-copy {
+    font-size: 0.78rem;
+    color: #333350;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .what-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .pdfs-banner { flex-direction: column; gap: 20px; }
+    .pdfs-number { font-size: 4rem; }
+    .pricing-card { padding: 32px 24px; }
+    .tools-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Code<span>Mastery</span> Pro</div>
+  <ul class="nav-links">
+    <li><a href="#curriculum">Curriculum</a></li>
+    <li><a href="#whats-included">Included</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#pricing" class="nav-cta">Get Access — $35</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <div class="badge"><span class="badge-dot"></span> v4.0 — Updated April 2025</div>
+
+  <h1>Master Software<br>Development <span class="highlight">from Zero<br>to Production</span></h1>
+  <p class="hero-sub">The most comprehensive coding course on the internet. Build real applications, land your first job, and write code that scales — for the price of a lunch.</p>
+
+  <div class="hero-actions">
+    <a href="#pricing" class="btn-primary">🚀 Start Learning — $35</a>
+    <a href="#curriculum" class="btn-ghost">View curriculum ↓</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">12,400+</div>
+      <div class="stat-label">Students enrolled</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">135+</div>
+      <div class="stat-label">PDFs & resources</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">98hrs</div>
+      <div class="stat-label">Video content</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.9★</div>
+      <div class="stat-label">Average rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE PREVIEW -->
+<div class="code-preview">
+  <div class="code-window">
+    <div class="code-titlebar">
+      <div class="dot-red"></div>
+      <div class="dot-yellow"></div>
+      <div class="dot-green"></div>
+      <span class="code-filename">server.js — CodeMastery Pro / Module 7</span>
+    </div>
+    <div class="code-body">
+      <div><span class="ln">01</span><span class="cm">// Module 7: Building a production REST API</span></div>
+      <div><span class="ln">02</span><span class="kw">import</span> express <span class="kw">from</span> <span class="str">'express'</span>;</div>
+      <div><span class="ln">03</span><span class="kw">import</span> { authenticate } <span class="kw">from</span> <span class="str">'./middleware/auth.js'</span>;</div>
+      <div><span class="ln">04</span><span class="kw">import</span> { rateLimit } <span class="kw">from</span> <span class="str">'express-rate-limit'</span>;</div>
+      <div><span class="ln">05</span></div>
+      <div><span class="ln">06</span><span class="kw">const</span> <span class="var">app</span> = <span class="fn">express</span>();</div>
+      <div><span class="ln">07</span><span class="kw">const</span> <span class="var">limiter</span> = <span class="fn">rateLimit</span>({ windowMs: <span class="num">15</span> * <span class="num">60</span> * <span class="num">1000</span>, max: <span class="num">100</span> });</div>
+      <div><span class="ln">08</span></div>
+      <div><span class="ln">09</span>app.<span class="fn">get</span>(<span class="str">'/api/users'</span>, authenticate, <span class="kw">async</span> (req, res) => {</div>
+      <div><span class="ln">10</span>&nbsp;&nbsp;<span class="kw">try</span> {</div>
+      <div><span class="ln">11</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">const</span> <span class="var">users</span> = <span class="kw">await</span> db.<span class="fn">query</span>(<span class="str">'SELECT * FROM users WHERE active = $1'</span>, [<span class="kw">true</span>]);</div>
+      <div><span class="ln">12</span>&nbsp;&nbsp;&nbsp;&nbsp;res.<span class="fn">json</span>({ success: <span class="kw">true</span>, data: users.rows, count: users.rowCount });</div>
+      <div><span class="ln">13</span>&nbsp;&nbsp;} <span class="kw">catch</span> (err) { <span class="fn">next</span>(err); }</div>
+      <div><span class="ln">14</span>});</div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT'S INCLUDED -->
+<section id="whats-included">
+  <div class="container">
+    <div class="section-label">// what_you_get</div>
+    <h2 class="section-title">Everything you need<br>to go from zero to hired</h2>
+    <p class="section-sub">One payment. Lifetime access. No monthly fees, no upsells — just the most complete coding education available.</p>
+
+    <div class="what-grid">
+      <div class="what-card">
+        <div class="card-icon icon-cyan">🎥</div>
+        <div class="card-title">98+ Hours of Video</div>
+        <div class="card-desc">Crystal-clear screen recordings with real code, real projects, and zero fluff. Watch at your own pace, forever.</div>
+      </div>
+      <div class="what-card">
+        <div class="card-icon icon-purple">📄</div>
+        <div class="card-title">135+ PDF Resources</div>
+        <div class="card-desc">Cheat sheets, reference guides, architecture diagrams, and study packs for every single module in the course.</div>
+      </div>
+      <div class="what-card">
+        <div class="card-icon icon-orange">💻</div>
+        <div class="card-title">Source Code Access</div>
+        <div class="card-desc">Every project's final source code in a private GitHub repo. Clone, fork, and build on top of real production-grade code.</div>
+      </div>
+      <div class="what-card">
+        <div class="card-icon icon-green">🧪</div>
+        <div class="card-title">300+ Practice Exercises</div>
+        <div class="card-desc">Graded coding challenges ranging from fundamentals to advanced algorithms. Build muscle memory through repetition.</div>
+      </div>
+      <div class="what-card">
+        <div class="card-icon icon-pink">🏆</div>
+        <div class="card-title">Certificate of Completion</div>
+        <div class="card-desc">A shareable, verifiable certificate to add to your LinkedIn, resume, and portfolio once you finish the course.</div>
+      </div>
+      <div class="what-card">
+        <div class="card-icon icon-yellow">⚡</div>
+        <div class="card-title">Lifetime Updates</div>
+        <div class="card-desc">The tech stack evolves — so does the course. Get all future updates, new modules, and bonus content free forever.</div>
+      </div>
+    </div>
+
+    <!-- PDFs BANNER -->
+    <div class="pdfs-banner">
+      <div class="pdfs-number">135+</div>
+      <div class="pdfs-info">
+        <h3>PDFs, guides & much more</h3>
+        <p>Every module comes with beautifully designed reference sheets you can print or keep on your second monitor. Plus cheat sheets, interview prep packs, architecture templates, and bonus reading for every topic covered.</p>
+        <div class="pdfs-tags">
+          <span class="tag">HTML/CSS ref</span>
+          <span class="tag">JS cheatsheet</span>
+          <span class="tag">SQL quick guide</span>
+          <span class="tag">Git commands</span>
+          <span class="tag">React patterns</span>
+          <span class="tag">Node.js API</span>
+          <span class="tag">Interview prep</span>
+          <span class="tag">System design</span>
+          <span class="tag">+127 more</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section id="curriculum" class="curriculum-bg">
+  <div class="container">
+    <div class="section-label">// curriculum</div>
+    <h2 class="section-title">12 modules. 98 hours.<br>One clear path.</h2>
+    <p class="section-sub">Structured like a real software engineering bootcamp — but at your pace, in your time, for $35.</p>
+
+    <div class="modules">
+
+      <div class="module open">
+        <div class="module-header" onclick="toggleModule(this)">
+          <div class="module-left">
+            <span class="module-num">01</span>
+            <span class="module-title">Foundations of Programming</span>
+          </div>
+          <div class="module-meta">
+            <span class="module-count">12 lessons • 6h 20m</span>
+            <span class="module-arrow">▶</span>
+          </div>
+        </div>
+        <div class="module-lessons">
+          <div class="lesson"><span class="lesson-icon">▶</span> How computers actually work <span class="lesson-free">FREE PREVIEW</span></div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Variables, types & memory</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Control flow & logic</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Functions & scope</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Arrays, objects & data structures</div>
+          <div class="lesson"><span class="lesson-icon">📄</span> PDF: Foundations Reference Sheet</div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-header" onclick="toggleModule(this)">
+          <div class="module-left">
+            <span class="module-num">02</span>
+            <span class="module-title">HTML, CSS & Responsive Design</span>
+          </div>
+          <div class="module-meta">
+            <span class="module-count">16 lessons • 8h 45m</span>
+            <span class="module-arrow">▶</span>
+          </div>
+        </div>
+        <div class="module-lessons">
+          <div class="lesson"><span class="lesson-icon">▶</span> Semantic HTML deep dive <span class="lesson-free">FREE PREVIEW</span></div>
+          <div class="lesson"><span class="lesson-icon">▶</span> CSS Grid & Flexbox mastery</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Mobile-first responsive design</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> CSS animations & transitions</div>
+          <div class="lesson"><span class="lesson-icon">📄</span> PDF: CSS Properties Cheatsheet</div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-header" onclick="toggleModule(this)">
+          <div class="module-left">
+            <span class="module-num">03</span>
+            <span class="module-title">JavaScript — Deep Dive</span>
+          </div>
+          <div class="module-meta">
+            <span class="module-count">22 lessons • 14h 30m</span>
+            <span class="module-arrow">▶</span>
+          </div>
+        </div>
+        <div class="module-lessons">
+          <div class="lesson"><span class="lesson-icon">▶</span> Closures, prototypes & the event loop</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Async/await & Promises</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Modules & bundlers</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> DOM manipulation & events</div>
+          <div class="lesson"><span class="lesson-icon">📄</span> PDF: JS Interview Prep Pack</div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-header" onclick="toggleModule(this)">
+          <div class="module-left">
+            <span class="module-num">04</span>
+            <span class="module-title">React — Modern Frontend</span>
+          </div>
+          <div class="module-meta">
+            <span class="module-count">18 lessons • 11h 15m</span>
+            <span class="module-arrow">▶</span>
+          </div>
+        </div>
+        <div class="module-lessons">
+          <div class="lesson"><span class="lesson-icon">▶</span> Components, props & state</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Hooks — useState, useEffect, useRef</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Context API & global state</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> React Router & code splitting</div>
+          <div class="lesson"><span class="lesson-icon">📄</span> PDF: React Hooks Reference</div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-header" onclick="toggleModule(this)">
+          <div class="module-left">
+            <span class="module-num">05</span>
+            <span class="module-title">Node.js & Backend Development</span>
+          </div>
+          <div class="module-meta">
+            <span class="module-count">20 lessons • 13h 00m</span>
+            <span class="module-arrow">▶</span>
+          </div>
+        </div>
+        <div class="module-lessons">
+          <div class="lesson"><span class="lesson-icon">▶</span> Node.js fundamentals & the runtime</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Express.js REST APIs</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Authentication — JWT & sessions</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> File uploads, emails & queues</div>
+          <div class="lesson"><span class="lesson-icon">📄</span> PDF: Node.js Architecture Guide</div>
+        </div>
+      </div>
+
+      <div class="module">
+        <div class="module-header" onclick="toggleModule(this)">
+          <div class="module-left">
+            <span class="module-num">06–12</span>
+            <span class="module-title">Databases, DevOps, System Design & More</span>
+          </div>
+          <div class="module-meta">
+            <span class="module-count">80+ lessons • 44h+</span>
+            <span class="module-arrow">▶</span>
+          </div>
+        </div>
+        <div class="module-lessons">
+          <div class="lesson"><span class="lesson-icon">▶</span> PostgreSQL, MongoDB & Redis</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Docker, CI/CD & cloud deployment</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> TypeScript — full coverage</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> System design & scalability</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Testing — unit, integration & e2e</div>
+          <div class="lesson"><span class="lesson-icon">▶</span> Capstone: Build & deploy a full-stack SaaS</div>
+          <div class="lesson"><span class="lesson-icon">📄</span> PDF: System Design Cheatsheet + 50 more PDFs</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section>
+  <div class="container">
+    <div class="section-label">// tech_stack</div>
+    <h2 class="section-title">Every tool used in<br>the real industry</h2>
+    <div class="tools-grid">
+      <div class="tool-chip"><div class="tool-emoji">🟨</div><div class="tool-name">JavaScript</div></div>
+      <div class="tool-chip"><div class="tool-emoji">⚛️</div><div class="tool-name">React</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🟢</div><div class="tool-name">Node.js</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🐘</div><div class="tool-name">PostgreSQL</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🍃</div><div class="tool-name">MongoDB</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🔷</div><div class="tool-name">TypeScript</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🐳</div><div class="tool-name">Docker</div></div>
+      <div class="tool-chip"><div class="tool-emoji">☁️</div><div class="tool-name">AWS / GCP</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🔴</div><div class="tool-name">Redis</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🐙</div><div class="tool-name">Git / GitHub</div></div>
+      <div class="tool-chip"><div class="tool-emoji">⚡</div><div class="tool-name">Vite</div></div>
+      <div class="tool-chip"><div class="tool-emoji">🧪</div><div class="tool-name">Jest / Vitest</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="reviews" style="background: var(--surface);">
+  <div class="container">
+    <div class="section-label">// student_reviews</div>
+    <h2 class="section-title">12,400+ developers<br>already inside</h2>
+
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="t-text">"I went from zero coding knowledge to landing a junior developer job in 6 months. The 135 PDFs alone are worth 10x the price. Best $35 I've ever spent."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: rgba(0,229,255,0.15); color: var(--accent);">MR</div>
+          <div>
+            <div class="t-name">Marcus R.</div>
+            <div class="t-role">Junior Dev @ Stripe</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="t-text">"The curriculum is genuinely better than a $15,000 bootcamp I attended. Module 5 on Node.js alone taught me things my bootcamp never covered. Insane value."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: rgba(167,139,250,0.15); color: var(--accent2);">SL</div>
+          <div>
+            <div class="t-name">Sophia L.</div>
+            <div class="t-role">Fullstack Dev @ Shopify</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="t-text">"Got my first freelance client one month after finishing the capstone project. The source code access meant I could literally deploy a real product immediately."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: rgba(249,115,22,0.15); color: var(--accent3);">JK</div>
+          <div>
+            <div class="t-name">James K.</div>
+            <div class="t-role">Freelance Developer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="t-text">"I've tried Udemy, Coursera, and freeCodeCamp. Nothing compares to the depth here. The exercises actually make you think instead of just copy-pasting."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: rgba(34,197,94,0.15); color: var(--green);">AP</div>
+          <div>
+            <div class="t-name">Aisha P.</div>
+            <div class="t-role">CS Student → SWE Intern</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="t-text">"The Docker & deployment module changed everything for me. I used to be terrified of the terminal. Now I'm running CI/CD pipelines at work. This course is the real deal."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: rgba(251,191,36,0.15); color: #fbbf24;">TN</div>
+          <div>
+            <div class="t-name">Tom N.</div>
+            <div class="t-role">Backend Engineer @ Vercel</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p class="t-text">"I was skeptical about a $35 course being any good. Then I saw the curriculum. Then I saw the 135+ PDFs. Then I finished module 3 in a week. Immediately recommended it to my whole team."</p>
+        <div class="t-author">
+          <div class="t-avatar" style="background: rgba(236,72,153,0.15); color: #ec4899;">DM</div>
+          <div>
+            <div class="t-name">Dana M.</div>
+            <div class="t-role">Tech Lead @ Remote Startup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-bg">
+  <div class="container" style="text-align:center;">
+    <div class="section-label" style="display:inline-block;">// pricing</div>
+    <h2 class="section-title">One price.<br>Everything included.</h2>
+    <p class="section-sub" style="margin: 0 auto;">No subscriptions. No hidden modules. No upsells. Just lifetime access to the complete course — forever.</p>
+
+    <div class="pricing-card">
+      <div class="pricing-badge">COMPLETE COURSE ACCESS</div>
+      <div class="pricing-name">CodeMastery Pro</div>
+      <div class="pricing-desc">Lifetime access — all 12 modules, all resources, all future updates</div>
+
+      <div class="price">
+        <span class="price-old">$299</span>
+        <span class="price-current">$35</span>
+        <span class="price-period">one-time</span>
+      </div>
+      <div class="price-note">🎉 Limited launch pricing — saves you $264</div>
+
+      <hr class="divider">
+
+      <ul class="feature-list">
+        <li><strong>98+ hours</strong> of HD video lessons</li>
+        <li><strong>135+ PDF</strong> resources, cheat sheets & reference guides</li>
+        <li><strong>300+ coding exercises</strong> with solutions</li>
+        <li><strong>12 real-world projects</strong> with full source code</li>
+        <li><strong>Verifiable certificate</strong> of completion</li>
+        <li><strong>Private GitHub repo</strong> access for all projects</li>
+        <li><strong>Lifetime updates</strong> — new modules added free</li>
+        <li><strong>30-day money-back</strong> guarantee, no questions asked</li>
+      </ul>
+
+      <button class="btn-purchase" onclick="alert('Thank you! Redirecting to checkout...')">
+        Get Instant Access — $35 →
+      </button>
+
+      <div class="trust-row">
+        🔒 Secure checkout &nbsp;·&nbsp; ✅ 30-day guarantee &nbsp;·&nbsp; ⚡ Instant access
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container" style="text-align:center;">
+    <div class="section-label" style="display:inline-block;">// faq</div>
+    <h2 class="section-title">Common questions</h2>
+
+    <div class="faqs">
+      <div class="faq open">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Do I need any prior experience to take this course?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">No experience needed at all. The course starts from the absolute fundamentals — how computers work, what a variable is — and gradually builds up to advanced topics like system design and cloud deployment. Complete beginners are welcome.</div>
+      </div>
+
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How do I access the 135+ PDFs and resources?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Immediately after purchase you'll receive an email with login credentials to the course portal. All 135+ PDFs are available to download directly from each module page. You can download them all at once or one at a time — they're yours to keep forever.</div>
+      </div>
+
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          Is there really a 30-day money-back guarantee?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Absolutely. If you're not satisfied for any reason within 30 days of purchase, just email us and we'll issue a full refund with no questions asked. We're that confident in the quality of the material.</div>
+      </div>
+
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          How long do I have access to the course?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Forever. This is a one-time payment with lifetime access. That also includes all future course updates and new modules added down the line — you pay once and get everything, always.</div>
+      </div>
+
+      <div class="faq">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          What makes this different from free resources like YouTube or freeCodeCamp?
+          <span class="faq-arrow">+</span>
+        </div>
+        <div class="faq-a">Free resources are fragmented — you have to figure out the path yourself. CodeMastery Pro gives you a structured, progressive curriculum, real projects, graded exercises, 135+ downloadable PDFs, source code access, and a certificate. It's the difference between reading Wikipedia and taking a real course.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Code<span>Mastery</span> Pro</div>
+    <ul class="footer-links">
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+      <li><a href="#">Refund Policy</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="footer-copy">© 2025 CodeMastery Pro. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  function toggleModule(header) {
+    const module = header.closest('.module');
+    module.classList.toggle('open');
+  }
+
+  function toggleFaq(qEl) {
+    const faq = qEl.closest('.faq');
+    faq.classList.toggle('open');
+  }
+
+  // Intersection observer for scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.what-card, .testimonial, .tool-chip, .module').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
